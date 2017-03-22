@@ -46,6 +46,12 @@ The service exposes an `eLog` variable that is a logger.  This will write to the
 ### Removing the Global Constants
 If you don't want the service names as global constants (and you probably won't) you can use the values in `svc_main.go` at the top of `main()` function instead.
 
+### Other 
+This uses the [GO error wrapper package]("github.com/pkg/errors").  You can easily 
+remove it if you prefer not to use it.
+
+
+
 
 
 
