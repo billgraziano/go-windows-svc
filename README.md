@@ -27,7 +27,7 @@ The service can be removed from an Administrative command prompt by typing:
 
 ## Customizing
 
-All service boilerplate code is in the four files with a "svc-" prefix.  There should
+All service boilerplate code is in the four files with a "svc_" prefix.  There should
 be no need to modify this code.
 
 The only code you should need to change is in main.go.
@@ -44,7 +44,7 @@ The two fucntions are controlled through a function named `svcLauncher()` that y
 The service exposes an `eLog` variable that is a logger.  This will write to the console when running interactively and to the Application Event Log when running as a service.
 
 ### Removing the Global Constants
-If you don't want the service names as global constants (and you probably won't) you can use the values in `svc-main.go` at the top of `main()` function instead.
+If you don't want the service names as global constants (and you probably won't) you can use the values in `svc_main.go` at the top of `main()` function instead.
 
 
 
