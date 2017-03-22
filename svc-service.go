@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/pkg/errors"
 	"golang.org/x/sys/windows/svc"
 	"golang.org/x/sys/windows/svc/debug"
 	"golang.org/x/sys/windows/svc/eventlog"
@@ -26,12 +27,20 @@ func (m *myservice) Execute(args []string, r <-chan svc.ChangeRequest, changes c
 	slowtick := time.Tick(2 * time.Second)
 	tick := fasttick
 	changes <- svc.Status{State: svc.Running, Accepts: cmdsAccepted}
+
+	// This launches your application
+	err := svcLauncher()
+	if err != nil {
+		elog.Error(1, errors.Wrap(err, "svcLauncher").Error())
+		return
+	}
+
 loop:
 	for {
 		select {
 		case <-tick:
-			beep()
-			elog.Info(1, "beep")
+			// appLauncher()
+			// elog.Info(1, "Launching app...")
 		case c := <-r:
 			switch c.Cmd {
 			case svc.Interrogate:

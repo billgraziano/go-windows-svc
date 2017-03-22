@@ -4,73 +4,56 @@
 
 // +build windows
 
-// Example service program that beeps.
-//
-// The program demonstrates how to create Windows service and
-// install / remove it on a computer. It also shows how to
-// stop / start / pause / continue any service, and how to
-// write to event log. It also shows how to use debug
-// facilities available in debug package.
-//
 package main
 
 import (
-	"fmt"
-	"log"
-	"os"
-	"strings"
+	"time"
 
-	"golang.org/x/sys/windows/svc"
+	"github.com/pkg/errors"
 )
 
-func usage(errmsg string) {
-	fmt.Fprintf(os.Stderr,
-		"%s\n\n"+
-			"usage: %s <command>\n"+
-			"       where <command> is one of\n"+
-			"       install, remove, debug, start, stop, pause or continue.\n",
-		errmsg, os.Args[0])
-	os.Exit(2)
+// This is the name you will use for the NET START command
+const svcName = "myservice"
+
+// This is the name that will appear in the Services control panel
+const svcNameLong = "My Service"
+
+// Do your setup here
+// Returning an error will prevent the service from starting
+func setup() error {
+	elog.Info(1, "In setup")
+
+	// Returning an error prevents the service from starting
+	return nil
 }
 
-func main() {
-	const svcName = "myservice"
+// The wrapper of your app
+func yourApp() {
+	elog.Info(1, "In yourApp")
 
-	isIntSess, err := svc.IsAnInteractiveSession()
+	// This is just some sample code to do something
+	time.Sleep(1 * time.Second)
+	elog.Info(1, "Still running")
+
+	time.Sleep(2 * time.Second)
+	elog.Info(1, "And running")
+
+	time.Sleep(3 * time.Second)
+	elog.Info(1, "Last message")
+	elog.Info(1, "But the service will keep running")
+
+	// Notice that if this exits, the service continues to run
+}
+
+func svcLauncher() error {
+	err := setup()
 	if err != nil {
-		log.Fatalf("failed to determine if we are running in an interactive session: %v", err)
-	}
-	if !isIntSess {
-		runService(svcName, false)
-		return
+		return errors.Wrap(err, "setup")
 	}
 
-	if len(os.Args) < 2 {
-		usage("no command specified")
-	}
+	// Your service should be launched as a GO routine
+	// It can launch other go routines, web servers, etc.
+	go yourApp()
 
-	cmd := strings.ToLower(os.Args[1])
-	switch cmd {
-	case "debug":
-		runService(svcName, true)
-		return
-	case "install":
-		err = installService(svcName, "my service")
-	case "remove":
-		err = removeService(svcName)
-	case "start":
-		err = startService(svcName)
-	case "stop":
-		err = controlService(svcName, svc.Stop, svc.Stopped)
-	case "pause":
-		err = controlService(svcName, svc.Pause, svc.Paused)
-	case "continue":
-		err = controlService(svcName, svc.Continue, svc.Running)
-	default:
-		usage(fmt.Sprintf("invalid command %s", cmd))
-	}
-	if err != nil {
-		log.Fatalf("failed to %s %s: %v", cmd, svcName, err)
-	}
-	return
+	return nil
 }
