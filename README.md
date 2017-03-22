@@ -5,7 +5,7 @@ It is a project shell to create a Windows service.
 
 ## Getting Started
 
-The program compiles and runs on GO 1.8.  The generated executable accepts a single parameter.  These include:
+The program compiles and runs on GO 1.8.  The generated executable accepts a single parameter.  The parameter values include:
 
 * debug - runs the program from the command-line
 * install - installs a windows service
@@ -32,19 +32,19 @@ be no need to modify this code.
 
 The only code you should need to change is in main.go.
 
-* svcName - This constant is the name of the installed service.  This is used for NET START and NET STOP commands.
-* svcNameLong - This is the longer service name that appears in the Services control panel.
-* setup() - This function is calle to do any application setup.  It returns an error.  If the error is non-nil, the service will exit.
-* yourApp() - This is launched as a GO routine.  This is the body of your application.
+* `svcName` - This constant is the name of the installed service.  This is used for NET START and NET STOP commands.
+* `svcNameLong` - This is the longer service name that appears in the Services control panel.
+* `setup()` - This function is called to do any application setup.  It can return an error.  If the error is non-nil, the service will exit.
+* `yourApp()` - This is launched as a GO routine.  This is the body of your application.  Here you can launch web servers, listeners, or whatever your application does.
 
-These two are controlled through a function named svcLauncher that you can customize if you like.
+The two fucntions are controlled through a function named `svcLauncher()` that you can customize if you like.
 
 ## Advanced
 ### Logging
-The service exposes eLog variable that is a logger.  This will write to the console when running interactively and to the Application Event Log when running as a service.
+The service exposes an `eLog` variable that is a logger.  This will write to the console when running interactively and to the Application Event Log when running as a service.
 
 ### Removing the Global Constants
-If you don't want the service names as global constants (and you probably won't) you can use the values in svc-main.go at the top of main() instead.
+If you don't want the service names as global constants (and you probably won't) you can use the values in `svc-main.go` at the top of `main()` function instead.
 
 
 
