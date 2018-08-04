@@ -16,6 +16,7 @@ import (
 )
 
 func exePath() (string, error) {
+	var err error
 	prog := os.Args[0]
 	p, err := filepath.Abs(prog)
 	if err != nil {
@@ -29,8 +30,10 @@ func exePath() (string, error) {
 		err = fmt.Errorf("%s is directory", p)
 	}
 	if filepath.Ext(p) == "" {
+		var fi os.FileInfo
+
 		p += ".exe"
-		fi, err := os.Stat(p)
+		fi, err = os.Stat(p)
 		if err == nil {
 			if !fi.Mode().IsDir() {
 				return p, nil
