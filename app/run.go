@@ -6,7 +6,7 @@ import (
 )
 
 // Run launches the service
-func Run(wl *debug.Log, svcName, sha1ver string) error {
+func Run(wl debug.Log, svcName, sha1ver string) error {
 
 	s, err := setup(wl, svcName, sha1ver)
 	if err != nil {

@@ -7,7 +7,7 @@ import (
 )
 
 // if setup returns an error, the service doesn't start
-func setup(wl *debug.Log, svcName, sha1ver string) (server, error) {
+func setup(wl debug.Log, svcName, sha1ver string) (server, error) {
 	var s server
 
 	// did we get a full SHA1?
@@ -19,7 +19,7 @@ func setup(wl *debug.Log, svcName, sha1ver string) (server, error) {
 		sha1ver = "dev"
 	}
 
-	s.winlog = *wl
+	s.winlog = wl
 
 	// Note: any logging here goes to Windows App Log
 	// I suggest you setup local logging
