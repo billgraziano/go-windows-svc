@@ -41,6 +41,7 @@ be no need to modify this code.
 
 The only code you should need to change is in main.go.
 
+* Replace the import of `github.com/billgraziano/go-windows-svc/app` with the path to your package.
 * `svcName` - This constant is the name of the installed service.  This is used for NET START and NET STOP commands.
 * `svcNameLong` - This is the longer service name that appears in the Services control panel.
 * `svcLauncher()` - This launches app.Run passing it a Windows Event Logger, the `svcName`, and the SHA1 hash from GIT.
